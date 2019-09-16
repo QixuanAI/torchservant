@@ -1,6 +1,6 @@
 # pytorch_AI_Engine
 
-中文版本 | [English Version](README_en-US.py)
+中文版本 | [English Version](https://github.com/QixuanAI/pytorch_AI_Engine/blob/master/README_en-US.md)
 
 这是一个基于[PyTorch](https://pytorch.org)的深度学习开发框架。它的设计思想是：将开发者从模型加载保存、数据记录与可视化等繁琐重复的工作中解放出来，让用户只需专注于**模型设计**、**超参数选取**、**损失函数与优化器设计**、**训练模型**、**验证模型**这几个核心步骤，从而**快速创建并调试基于[PyTorch](https://pytorch.org)的深度神经网络**。
 
