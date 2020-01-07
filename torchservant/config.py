@@ -40,7 +40,7 @@ class BasicConfig(object):
 
     # model config
     model = None
-    mode = "train"
+    mode = "train"  # optional from 'train', 'val' or 'eval'
     use_batch_norm = True
     # loss_type = None
     # optimizer_type = None
@@ -54,7 +54,7 @@ class BasicConfig(object):
     def __init__(self, **kwargs):
         self.init_time = timestr('%Y%m%d.%H%M%S')
         if self.mode not in ["train", "training", "inference", "validation", "val", "test", "evaluation", "eval"]:
-            warn("Invalid argument mode, expect 'train' or 'inference' but got '%s'" % mode)
+            warn("Invalid argument mode, expect 'train' or 'inference' but got '%s'" % self.mode)
         self.enable_grad = self.mode in ['train', "training"]
         for key, value in kwargs.items():
             if hasattr(self, key):
@@ -96,8 +96,8 @@ class BasicConfig(object):
         os.makedirs(self.log_root, exist_ok=True)
         os.makedirs(self.vis_env_path, exist_ok=True)
         assert os.path.isdir(self.log_root)
-        self.temp_weight_path = os.path.join(self.log_root, 'tmpmodel{time}.pth'.format(time=self.init_time))
-        self.temp_optim_path = os.path.join(self.log_root, 'tmpoptim{time}.pth'.format(time=self.init_time))
+        self.temp_ckpt_path = os.path.join(self.log_root, 'ckpt-{time}.pth'.format(time=self.init_time))
+        # self.temp_optim_path = os.path.join(self.log_root, 'tmpoptim{time}.pth'.format(time=self.init_time))
         self.log_file = os.path.join(self.log_root, '{}.{}.log'.format(self.mode, self.init_time))
         self.val_result = os.path.join(self.log_root, 'validation_result{}.txt'.format(self.init_time))
         self.train_record_file = os.path.join(self.log_root, 'train.record.jsons')

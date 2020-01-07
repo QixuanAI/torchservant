@@ -2,31 +2,46 @@
 # @Time    : 2019/1/13/013 20:00 下午
 # @Author  : LQX
 # @Email   : qxsoftware@163.com
-# @File    : base.py
+# @File    : save_load.py
 # @Software: PyCharm
 
 import os
 import shutil
+import math
 import time
 import torch as t
-from torch import save, load, set_grad_enabled
+from torch import nn, save, load, set_grad_enabled
 from warnings import warn
 from torch.nn import Module, DataParallel
 from torch.optim import Optimizer
 from torch_engine.core.config import BasicConfig
 
+#
+# class BaseModule(Module):
+#     def __int__(self, config: BasicConfig):
+#         super(BaseModule, self).__init__()
+#         self.config = config
+#
+#     def forward(self, input):
+#         raise NotImplementedError("Should be overridden by all subclasses.")
+#
+#     def initialize_weights(self):
+#         raise NotImplementedError("Should be overridden by all subclasses.")
 
-class BaseModule(Module):
-    def __int__(self, config: BasicConfig):
-        super(BaseModule, self).__init__()
-        self.config = config
-
-    def forward(self, input):
-        raise NotImplementedError("Should be overridden by all subclasses.")
-
-    def initialize_weights(self):
-        raise NotImplementedError("Should be overridden by all subclasses.")
-
+def initialize_weights(model:Module,config:BasicConfig):
+    init_method = config.weight_init_method
+    for m in model.modules():
+        if isinstance(m, nn.Conv2d):
+            n = m.kernel_size[0] * m.kernel_size[1] * m.out_channels
+            m.weight.data.normal_(0, math.sqrt(2. / n))
+            if m.bias is not None:
+                m.bias.data.zero_()
+        elif isinstance(m, nn.BatchNorm2d):
+            m.weight.data.fill_(1)
+            m.bias.data.zero_()
+        elif isinstance(m, nn.Linear):
+            m.weight.data.normal_(0, 0.01)
+            m.bias.data.zero_()
 
 def pack_model(model: Module, config: BasicConfig) -> Module:
     """
@@ -43,8 +58,6 @@ def pack_model(model: Module, config: BasicConfig) -> Module:
         getattr(model, "initialize_weights")()
     except AttributeError as e:
         warn("initialize weights failed because:\n" + str(e))
-    # parallel processing
-    model = DataParallel(model, config.gpu_list)
     # load weights
     if os.path.exists(config.weight_load_path):
         try:
@@ -54,10 +67,13 @@ def pack_model(model: Module, config: BasicConfig) -> Module:
         except RuntimeError as e:
             warn("Failed to load weights file")
             print('Failed to load weights file {} because:\n{}'.format(config.weight_load_path, e))
+    # parallel processing
+    if config.use_gpu:
+        model = DataParallel(model, config.gpu_list)
     return model
 
 
-def get_model(config: BasicConfig, **kwargs) -> BaseModule:
+def get_model(config: BasicConfig, **kwargs) -> Module:
     """
     Find a Module specified by config.model from ..models, and get an instance of it.
     :param config: An instance of core.BasicConfig or any inherited class.
@@ -81,9 +97,10 @@ def make_checkpoint(config, epoch, start_time, loss_val, train_score, val_score,
     """
     generate temporary training process data for resuming by resume_checkpoint()
     """
-    save(model.state_dict(), config.temp_weight_path)
+    ckpt = {'epoch':epoch,'start_time':start_time,'model_state_dict':model.state_dict()}
     if optimizer is not None and hasattr(optimizer, "state_dict"):
-        save(optimizer.state_dict(), config.temp_optim_path)
+        ckpt['optimizer_state_dict']=optimizer.state_dict()
+    save(ckpt, config.temp_ckpt_path)
     with open(config.train_record_file, 'a+') as f:
         elapsed_time = time.time() - start_time,
         record = config.__record_dict__.format(config.init_time, epoch, start_time, elapsed_time, loss_val, train_score,
@@ -97,7 +114,7 @@ def resume_checkpoint(config: BasicConfig, model: Module, optimizer: Optimizer =
     :return number of last epoch
     """
     last_epoch = -1
-    temp_weight_path = config.temp_weight_path
+    temp_weight_path = config.temp_ckpt_path
     temp_optim_path = config.temp_optim_path
     if os.path.exists(config.train_record_file):
         try:
@@ -137,19 +154,22 @@ def resume_checkpoint(config: BasicConfig, model: Module, optimizer: Optimizer =
     return last_epoch
 
 
-def save_model_dump_history(config: BasicConfig, model: Module,
+def save_model_and_dump_history(config: BasicConfig, model: Module,
                             last_epoch=None, loss_val=None, val_score=None, optimizer=None):
     try:
+        # remove the nn.DataParallel layer(s) in case of complex situation when loading to CPU.
+        while isinstance(model, t.nn.DataParallel):
+            model = list(model.children())[0]
         save_path = config.__format_path__(config.weight_save_path, last_epoch, loss_val, val_score, optimizer)
         t.save(model.state_dict(), save_path)
         # print("Model saved into " + config.weight_save_path)
     except Exception as e:
         raise RuntimeError(
-            "Failed to save model because {}, check temp weight file in {}".format(e, config.temp_weight_path))
+            "Failed to save model because {}, check temp weight file in {}".format(e, config.temp_ckpt_path))
     # dump local temporary files into history directory
     try:
         os.remove(config.temp_optim_path)
-        os.remove(config.temp_weight_path)
+        os.remove(config.temp_ckpt_path)
         dist = os.path.join(config.history_root, config.log_root + config.init_time)
         shutil.move(config.log_root, dist)
         # print("Correlation logs has been moved into ", dist)

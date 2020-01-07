@@ -5,6 +5,9 @@
 # @File    : __init__.py
 # @Software: PyCharm
 
-from core import *
-import models
-import utils
+import modelkeeper
+import board
+import stats
+import classicalmodels
+import observer
+import weightransfer
