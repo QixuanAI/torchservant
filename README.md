@@ -1,14 +1,35 @@
-# pytorch_AI_Engine
+# TorchServant
 
 中文版本 | [English Version](https://github.com/QixuanAI/pytorch_AI_Engine/blob/master/README_en-US.md)
 
-这是一个基于[PyTorch](https://pytorch.org)的深度学习开发框架。它的设计思想是：将开发者从模型加载保存、数据记录与可视化等繁琐重复的工作中解放出来，让用户只需专注于**模型设计**、**超参数选取**、**损失函数与优化器设计**、**训练模型**、**验证模型**这几个核心步骤，从而**快速创建并调试基于[PyTorch](https://pytorch.org)的深度神经网络**。
+这是一个帮助[PyTorch](https://pytorch.org)用户快速进行深度学习开发的工具集。
+它的设计思想是：将研究者从模型加载保存、数据记录与可视化等繁琐重复的工作中解放出来，
+让用户只需专注于
+**模型设计**、
+**超参数选取**、
+**损失函数与优化器设计**、
+**训练模型**、
+**验证模型**
+这几个核心步骤，从而
+**快速创建并调试基于[PyTorch](https://pytorch.org)的深度神经网络**。
 
-它还包含了许多有用的工具，比如**自动化的模型保存/加载**、**紧急中断恢复**、**基于[Visdom](https://github.com/facebookresearch/visdom)或[TensorBoardX](https://github.com/lanpa/tensorboardX)的学习过程可视化**、**模型迁移/复用帮助工具**（开发中）、**模型可视化工具**（待开发）、**权重可视化工具**（待开发）、**个性化进度条**、**可复现Dataloader**（待开发）等等。
+它包含了许多有用的工具，比如
+**自动化的模型保存/加载**、
+**紧急中断恢复**、
+**基于[Visdom](https://github.com/facebookresearch/visdom)或[TensorBoardX](https://github.com/lanpa/tensorboardX)的学习过程可视化**、
+**模型迁移/复用帮助工具**（开发中）、
+**模型可视化工具**（待开发）、
+**权重可视化工具**（待开发）、
+**个性化进度条**、
+**可复现Dataloader**（待开发）等等。
 
-目前该框架还在持续开发中，后续还将视情况添加更多功能。欢迎志同道合的朋友们加入此项目。
+目前该应用还处在设计开发阶段，后续还将视情况添加更多功能。欢迎有志于此的朋友们加入此项目。
 
+## 安装
 
+```bash
+pip install torchservant
+```
 
 ## 示例
 
