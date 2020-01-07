@@ -7,7 +7,7 @@
 
 
 from torch.utils.data import Dataset, DataLoader
-from torch_engine.core.config import BasicConfig
+from torchservant.config import BasicConfig
 
 
 def GetDataLoader(data_type, dataset, config):

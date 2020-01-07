@@ -14,7 +14,7 @@ from torch import nn, save, load, set_grad_enabled
 from warnings import warn
 from torch.nn import Module, DataParallel
 from torch.optim import Optimizer
-from torch_engine.core.config import BasicConfig
+from torchservant.config import BasicConfig
 
 #
 # class BaseModule(Module):
@@ -81,13 +81,13 @@ def get_model(config: BasicConfig, **kwargs) -> Module:
     :return: An instance of torch.Module specified by config.model.
     """
     assert isinstance(config, BasicConfig)
-    from .. import models
+    from torchservant import classicmodels
     try:
         with set_grad_enabled(config.enable_grad):
-            model = getattr(models, config.model)(config, **kwargs)
+            model = getattr(classicmodels, config.model)(config, **kwargs)
     except AttributeError as e:
         raise AttributeError(
-            "No model named '{}' exists in core.models, error message: {}".format(config.model, e))
+            "No model named '{}' exists in models_manager, error message: {}".format(config.model, e))
     model = pack_model(model, config)
     return model
 

@@ -16,6 +16,14 @@ It could help users focus on the core pipelines of design neural networks, inclu
 **evaluate models**,
 and etc.
 
+TorchServant contains the following components:
+
+	modelkeeper:	Manage weights files and checkpoints, keep training process continuous.
+	board:		API for visdom and tensorboard, visualize diagrams, illustrations and progresses.
+	stats		Resource statistics on GPUs, memories, cpu, and consumed time.
+	classicmodels:	Include AlexNet, VGG, Resnet, Inception, etc.
+	observer:	Visualize feature maps during training and evaluation process.
+	weightransfer:	An Qt-based visual tool to transfer weights between different models.
 
 
 ## Install

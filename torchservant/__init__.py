@@ -8,6 +8,6 @@
 import modelkeeper
 import board
 import stats
-import classicalmodels
+import classicmodels
 import observer
 import weightransfer
