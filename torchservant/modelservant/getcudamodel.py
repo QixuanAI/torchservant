@@ -12,7 +12,7 @@ from torchservant._basic import *
 from torchservant.cfgenator.config import BasicConfig
 
 
-def pack_model(model: Module, use_gpu=True, weight_load_path=None, gpu_list=None, printproc=True, errlevel=1) -> Module:
+def pack_model(model: Module, use_gpu=True, weight_load_path="", gpu_list=None, printproc=True, errlevel=1) -> Module:
     """
     Try to pack the model into GPU devices and load pre-trained weights.
     :param model: An instance of torch.Module or any inherited class.
