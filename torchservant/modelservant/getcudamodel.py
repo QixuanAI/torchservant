@@ -57,7 +57,7 @@ def get_model(model_name, config: BasicConfig, **kwargs) -> Module:
     :return: An instance of torch.Module specified by config.model.
     """
     assert isinstance(config, BasicConfig)
-    for lib in config.model_libs:
+    for lib in config.model_libs[::-1]:
         if hasattr(lib, model_name):
             try:
                 with set_grad_enabled(config.enable_grad):
