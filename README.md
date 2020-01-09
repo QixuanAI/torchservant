@@ -1,6 +1,6 @@
 # TorchServant
 
-[中文版本](https://github.com/QixuanAI/pytorch_AI_Engine/blob/master/README.md) | English Version
+[中文版本](https://github.com/QixuanAI/pytorch_AI_Engine/blob/master/README_zh-CN.md) | English Version
 
 > **TorchServant is still in design and development stage, and more modules may be added.
 Welcome interested friends to join this project.````**

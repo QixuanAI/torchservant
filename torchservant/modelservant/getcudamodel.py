@@ -12,7 +12,7 @@ from torchservant._basic import *
 from torchservant.cfgenator.config import BasicConfig
 
 
-def pack_model(model: Module, use_gpu=True, weight_load_path=None, gpu_list=None, printproc=True, errlevel=1) -> Module:
+def pack_model(model: Module, use_gpu=True, weight_load_path="", gpu_list=None, printproc=True, errlevel=1) -> Module:
     """
     Try to pack the model into GPU devices and load pre-trained weights.
     :param model: An instance of torch.Module or any inherited class.
@@ -29,7 +29,7 @@ def pack_model(model: Module, use_gpu=True, weight_load_path=None, gpu_list=None
     else:
         map_location = "cpu"
     # load weights
-    if os.path.exists(weight_load_path):
+    if os.path.isfile(weight_load_path):
         try:
             state_dict = load(weight_load_path, map_location=map_location)
             model.load_state_dict(state_dict)
@@ -37,6 +37,8 @@ def pack_model(model: Module, use_gpu=True, weight_load_path=None, gpu_list=None
                 print('Loaded weights from ' + weight_load_path)
         except Exception as e:
             handle_err('Failed to load weights file {} because {}'.format(weight_load_path, e), errlevel)
+    elif printproc and errlevel > 0:
+        print('File not exist in {}'.format(weight_load_path))
     # parallel processing
     if use_gpu:
         try:
@@ -62,7 +64,8 @@ def get_model(model_name, config: BasicConfig, **kwargs) -> Module:
             try:
                 with set_grad_enabled(config.enable_grad):
                     model = getattr(lib, model_name)(config, **kwargs)
-                    model = pack_model(model,config.use_gpu,config.weight_load_path,config.gpu_list,config.printproc,config.errlevel)
+                    model = pack_model(model, config.use_gpu, config.weight_load_path, config.gpu_list,
+                                       config.printproc, config.errlevel)
                     return model
             except Exception as e:
                 handle_err(e, config.errlevel)
