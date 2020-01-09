@@ -2,7 +2,7 @@
 # @Time    : 2019/1/8 2:08
 # @Author  : LQX
 # @Email   : qixuan.lqx@qq.com
-# @File    : visdomtools.py
+# @File    : visdom_api.py
 # @Software: PyCharm
 
 import os
@@ -19,7 +19,7 @@ from torchservant.cfgenator.config import BasicConfig
 
 # Todo: Save/Load method: download env from server to local for transmit, and upload local env to server for share
 # Todo: Start server through local code
-class VisdomVisualizer(object):
+class VisdomAPI(object):
     def __init__(self, config: BasicConfig):
         # logging_level = logging._checkLevel("INFO")
         # logging.getLogger().setLevel(logging_level)
@@ -86,14 +86,14 @@ class VisdomVisualizer(object):
         opts = dict(title=win)
         if legend is not None:
             opts["legend"] = legend
-        y = VisdomVisualizer._to_numpy(y)
-        x = VisdomVisualizer._to_numpy(x)
+        y = VisdomAPI._to_numpy(y)
+        x = VisdomAPI._to_numpy(x)
         return win == self.visdom.line(y, x, win=win, env=self.config.visdom_env, opts=opts,
                                        update=update, name=line_name)
 
     def bar(self, y, win, rowindices=None):
         opts = dict(title=win)
-        y = VisdomVisualizer._to_numpy(y)
+        y = VisdomAPI._to_numpy(y)
         if isinstance(rowindices, list) and len(rowindices) == len(y):
             opts["rownames"] = rowindices
         return win == self.visdom.bar(y, win=win, env=self.config.visdom_env, opts=opts)

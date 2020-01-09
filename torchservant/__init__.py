@@ -5,10 +5,10 @@
 # @File    : __init__.py
 # @Software: PyCharm
 
-# from torchservant import modelkeeper
+# from torchservant import modelservant
 # from torchservant import cfgenator
-# from torchservant import board
+# from torchservant import procmonitor
 # from torchservant import stats
 # from torchservant import classicmodels
-# from torchservant import observer
+# from torchservant import visualfeature
 # from torchservant import weightransfer

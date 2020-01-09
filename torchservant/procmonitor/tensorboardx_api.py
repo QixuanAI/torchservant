@@ -2,7 +2,7 @@
 # @Time    : 2019/09/16 01:33
 # @Author  : LQX
 # @Email   : qxsoftware@163.com
-# @File    : tensorboardx.py
+# @File    : tensorboardx_api.py
 # @Software: PyCharm
 
 import os

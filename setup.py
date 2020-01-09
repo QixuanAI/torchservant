@@ -9,11 +9,11 @@ from setuptools import setup, find_packages
 
 long_description = "TorchServant is an assembly helping quickly development for PyTorch users." + \
                    "It contains following components:\n" + \
-                   "\tmodelkeeper:\tManage weights files and checkpoints, keep training process continuous.\n" + \
-                   "\tboard:\t\tAPI for visdom and tensorboard, visualize diagrams, illustrations and progresses.\n" + \
+                   "\tmodelservant:\tManage weights files and checkpoints, keep training process continuous.\n" + \
+                   "\tprocmonitor:\t\tAPI for visdom and tensorboard, visualize diagrams, illustrations and progresses.\n" + \
                    "\tstats\t\tResource statistics on GPUs, memories, cpu, and consumed time.\n" + \
                    "\tclassicmodels:\tInclude AlexNet, VGG, Resnet, Inception, etc.\n" + \
-                   "\tobserver:\tVisualize feature maps during training and evaluation process.\n" + \
+                   "\tvisualfeature:\tVisualize feature maps during training and evaluation process.\n" + \
                    "\tweightransfer:\tAn Qt-based visual tool to transfer weights between different models."
 
 setup(

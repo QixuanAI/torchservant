@@ -2,15 +2,14 @@
 # @Time    : 2020/01/07 23:43
 # @Author  : LQX
 # @Email   : qxsoftware@163.com
-# @File    : weight_initializers.py
+# @File    : initialization.py
 # @Software: PyCharm
 
 import math
 import torch as t
-from torch import nn, save, load, set_grad_enabled
+from torch import nn
 from warnings import warn
-from torch.nn import Module, DataParallel
-from torch.optim import Optimizer
+from torch.nn import Module
 from torchservant.cfgenator.config import BasicConfig
 
 class _BaseWeiInitzer():

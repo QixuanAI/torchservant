@@ -8,11 +8,21 @@
 import os
 from warnings import warn
 from time import strftime as timestr
+from torchservant import classicmodels
 
 
 class BasicConfig(object):
-    mode="train" # optinal item from ['train', 'inference']
-    weight_init_method=None
+    model_libs = [classicmodels]
+    mode = "train"  # optinal item from ['train', 'inference']
+    weight_init_method = None
+    """Error Level, three levels, default is 1. Details:
+        0: try to ignore any errors; 
+        1: warn unnecessary errors, interrupt essential errors; 
+        2: interrupt any errors.
+    """
+    errlevel = 1
+    # print detail process messages
+    printproc=True
 
     # S/L config
     weight_load_path = r'checkpoints/pretrain.pth'  # where to load pre-trained weight for further training
@@ -32,9 +42,8 @@ class BasicConfig(object):
     # ToDo:
     # reproducible_record = False  # If set to True, detailed information will be recorded in every iteration for entirely reproducing
 
-
     # visualize config
-    visual_engine = 'visdom' # optinal item form ['visdom', 'vis', 'tensorboardx', 'tensorboard', 'tb']
+    visual_engine = 'visdom'  # optinal item form ['visdom', 'vis', 'tensorboardx', 'tensorboard', 'tb']
     host = 'localhost'
     port = None
     visdom_env = 'main'
@@ -47,7 +56,7 @@ class BasicConfig(object):
                 setattr(self, key, value)
             else:
                 warn("{} has no attribute {}:{}".format(type(self), key, value))
-        
+
         if self.mode not in ['train', 'inference']:
             warn("Invalid argument mode, expect 'train' or 'inference' but got '%s'" % self.mode)
         self.enable_grad = self.mode == 'train'
@@ -112,19 +121,19 @@ class BasicConfig(object):
         else:
             raise RuntimeError("Invalid parameter value of visual_engine :", self.visual_engine)
 
-    def save_cfg(self,path):
+    def save_cfg(self, path):
         pass
-    
-    def load_cfg(self,path):
+
+    def load_cfg(self, path):
         pass
-    
+
     def __dict__(self):
         ret = {}
         for a in dir(self):
             if not a.startswith("__") and not callable(getattr(self, a)):
-                ret[a]=getattr(self, a)
+                ret[a] = getattr(self, a)
         return ret
-    
+
     def __str__(self):
         """:return Configuration details."""
         str = "Configurations for %s:\n" % self.mode
