@@ -11,6 +11,7 @@ from time import strftime as timestr
 
 
 class BasicConfig(object):
+    weight_init_method=None
 
     # S/L config
     weight_load_path = r'checkpoints/pretrain.pth'  # where to load pre-trained weight for further training

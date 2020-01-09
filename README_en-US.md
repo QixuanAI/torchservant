@@ -2,7 +2,7 @@
 
 [中文版本](https://github.com/QixuanAI/pytorch_AI_Engine/blob/master/README.md) | English Version
 
-**The application is still in the design and development stage, and more functions will be added as the case may be.
+> **TorchServant is still in design and development stage, and more modules may be added.
 Welcome interested friends to join this project.````**
 
 TorchServant is an assembly helping quickly development for [PyTorch](https://pytorch.org) users.
@@ -16,15 +16,21 @@ It could help users focus on the core pipelines of design neural networks, inclu
 **evaluate models**,
 and etc.
 
+
+
+## Packages
+
 TorchServant contains the following components:
 
-	modelkeeper:	Manage weights files and checkpoints, keep training process continuous.
-	board:		API for visdom and tensorboard, visualize diagrams, illustrations and progresses.
-	stats		Resource statistics on GPUs, memories, cpu, and consumed time.
-	classicmodels:	Include AlexNet, VGG, Resnet, Inception, etc.
-	observer:	Visualize feature maps during training and evaluation process.
-	weightransfer:	An Qt-based visual tool to transfer weights between different models.
-
+| Package Name  | Explaination                                                 |
+| ------------- | ------------------------------------------------------------ |
+| cfgenator      | Configure file generator                                     | 
+| modelkeeper   | Manage weights files and checkpoints, keep training process continuous. |
+| board         | API for visdom and tensorboard, visualize diagrams, illustrations and progresses. |
+| stats         | Resource statistics on GPUs, memories, cpu, and consumed time. |
+| classicmodels | Include AlexNet, VGG, Resnet, Inception, etc.                |
+| observer      | Visualize feature maps during training and evaluation process. |
+| weightransfer | An Qt-based visual tool to transfer weights between different models. |
 
 ## Install
 

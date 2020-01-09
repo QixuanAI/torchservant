@@ -14,7 +14,7 @@ from torch import nn, save, load, set_grad_enabled
 from warnings import warn
 from torch.nn import Module, DataParallel
 from torch.optim import Optimizer
-from torchservant.cfgenator import BasicConfig
+from torchservant.cfgenator.config import BasicConfig
 
 
 def pack_model(model: Module, config: BasicConfig) -> Module:

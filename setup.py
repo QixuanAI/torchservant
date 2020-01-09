@@ -7,20 +7,26 @@
 
 from setuptools import setup, find_packages
 
-with open("README_en-US.md", "r") as fh:
-    long_description = fh.read()
+long_description = "TorchServant is an assembly helping quickly development for PyTorch users." + \
+                   "It contains following components:\n" + \
+                   "\tmodelkeeper:\tManage weights files and checkpoints, keep training process continuous.\n" + \
+                   "\tboard:\t\tAPI for visdom and tensorboard, visualize diagrams, illustrations and progresses.\n" + \
+                   "\tstats\t\tResource statistics on GPUs, memories, cpu, and consumed time.\n" + \
+                   "\tclassicmodels:\tInclude AlexNet, VGG, Resnet, Inception, etc.\n" + \
+                   "\tobserver:\tVisualize feature maps during training and evaluation process.\n" + \
+                   "\tweightransfer:\tAn Qt-based visual tool to transfer weights between different models."
 
 setup(
     name="torchservant",
-    version="0.2.0",
-    keywords={"pytorch", "ai", "deeplearning", "framework", "servant"},
+    version="0.2.1",
+    keywords={"pytorch", "tool", "deeplearning", "util", "servant", "visualize"},
     description="Many useful tools for PyTorch.",
     long_description=long_description,
     license="GNU GENERAL PUBLIC LICENSE v3",
     url="https://github.com/QixuanAI/torchservant",
     author="qxsoftware",
     author_email="qxsoftware@163.com",
-    packages=find_packages(exclude=["checkpoints", "logs", "test*", "*.md"]),
+    packages=find_packages(exclude=["checkpoints", "logs", "test*", ]),
     install_requires=["torch"],
     classifiers=[
         "Programming Language :: Python :: 3",
