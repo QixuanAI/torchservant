@@ -11,6 +11,7 @@ from time import strftime as timestr
 
 
 class BasicConfig(object):
+    mode="train" # optinal item from ['train', 'inference']
     weight_init_method=None
 
     # S/L config
@@ -46,7 +47,10 @@ class BasicConfig(object):
                 setattr(self, key, value)
             else:
                 warn("{} has no attribute {}:{}".format(type(self), key, value))
-
+        
+        if self.mode not in ['train', 'inference']:
+            warn("Invalid argument mode, expect 'train' or 'inference' but got '%s'" % self.mode)
+        self.enable_grad = self.mode == 'train'
 
         # efficiency config
         if self.use_gpu:
