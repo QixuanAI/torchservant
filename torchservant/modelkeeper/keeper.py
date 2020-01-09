@@ -14,34 +14,8 @@ from torch import nn, save, load, set_grad_enabled
 from warnings import warn
 from torch.nn import Module, DataParallel
 from torch.optim import Optimizer
-from torchservant.config import BasicConfig
+from torchservant.cfgenator import BasicConfig
 
-#
-# class BaseModule(Module):
-#     def __int__(self, config: BasicConfig):
-#         super(BaseModule, self).__init__()
-#         self.config = config
-#
-#     def forward(self, input):
-#         raise NotImplementedError("Should be overridden by all subclasses.")
-#
-#     def initialize_weights(self):
-#         raise NotImplementedError("Should be overridden by all subclasses.")
-
-def initialize_weights(model:Module,config:BasicConfig):
-    init_method = config.weight_init_method
-    for m in model.modules():
-        if isinstance(m, nn.Conv2d):
-            n = m.kernel_size[0] * m.kernel_size[1] * m.out_channels
-            m.weight.data.normal_(0, math.sqrt(2. / n))
-            if m.bias is not None:
-                m.bias.data.zero_()
-        elif isinstance(m, nn.BatchNorm2d):
-            m.weight.data.fill_(1)
-            m.bias.data.zero_()
-        elif isinstance(m, nn.Linear):
-            m.weight.data.normal_(0, 0.01)
-            m.bias.data.zero_()
 
 def pack_model(model: Module, config: BasicConfig) -> Module:
     """

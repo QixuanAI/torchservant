@@ -5,9 +5,9 @@
 # @File    : __init__.py
 # @Software: PyCharm
 
-import modelkeeper
-import board
-import stats
-import classicmodels
-import observer
-import weightransfer
+from torchservant import modelkeeper
+from torchservant import board
+from torchservant import stats
+from torchservant import classicmodels
+from torchservant import observer
+from torchservant import weightransfer

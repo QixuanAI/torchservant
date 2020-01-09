@@ -11,14 +11,6 @@ from time import strftime as timestr
 
 
 class BasicConfig(object):
-    # data config
-    train_data = None  # a path to training data
-    val_data = None  # a path to validation data
-    classes_list = []
-    shuffle_train = True
-    shuffle_val = False
-    drop_last_train = True
-    drop_last_val = False
 
     # S/L config
     weight_load_path = r'checkpoints/pretrain.pth'  # where to load pre-trained weight for further training
@@ -32,38 +24,28 @@ class BasicConfig(object):
     num_data_workers = 1  # how many subprocesses to use for data loading
     pin_memory = False  # only set to True when your machine's memory is large enough
     time_out = 0  # max seconds for loading a batch of data, 0 means non-limit
-    max_epoch = 100  # how many epochs for training
-    batch_size = 20  # how many scene images for a batch
-    ckpt_freq = 20  # save checkpoint after these iterations
+    max_epoch = None  # how many epochs for training
+    batch_size = None  # how many scene images for a batch
+    ckpt_freq = 1  # save checkpoint after these iterations
     # ToDo:
-    reproducible_record = False  # If set to True, detailed information will be recorded in every iteration for entirely reproducing
+    # reproducible_record = False  # If set to True, detailed information will be recorded in every iteration for entirely reproducing
 
-    # model config
-    model = None
-    mode = "train"  # optional from 'train', 'val' or 'eval'
-    use_batch_norm = True
-    # loss_type = None
-    # optimizer_type = None
 
     # visualize config
-    visual_engine = 'visdom'
+    visual_engine = 'visdom' # optinal item form ['visdom', 'vis', 'tensorboardx', 'tensorboard', 'tb']
     host = 'localhost'
     port = None
     visdom_env = 'main'
 
     def __init__(self, **kwargs):
         self.init_time = timestr('%Y%m%d.%H%M%S')
-        if self.mode not in ["train", "training", "inference", "validation", "val", "test", "evaluation", "eval"]:
-            warn("Invalid argument mode, expect 'train' or 'inference' but got '%s'" % self.mode)
-        self.enable_grad = self.mode in ['train', "training"]
+        # Parse kwargs
         for key, value in kwargs.items():
             if hasattr(self, key):
                 setattr(self, key, value)
             else:
                 warn("{} has no attribute {}:{}".format(type(self), key, value))
 
-        # data config
-        self.num_classes = len(self.classes_list)
 
         # efficiency config
         if self.use_gpu:
@@ -97,7 +79,6 @@ class BasicConfig(object):
         os.makedirs(self.vis_env_path, exist_ok=True)
         assert os.path.isdir(self.log_root)
         self.temp_ckpt_path = os.path.join(self.log_root, 'ckpt-{time}.pth'.format(time=self.init_time))
-        # self.temp_optim_path = os.path.join(self.log_root, 'tmpoptim{time}.pth'.format(time=self.init_time))
         self.log_file = os.path.join(self.log_root, '{}.{}.log'.format(self.mode, self.init_time))
         self.val_result = os.path.join(self.log_root, 'validation_result{}.txt'.format(self.init_time))
         self.train_record_file = os.path.join(self.log_root, 'train.record.jsons')
@@ -126,6 +107,19 @@ class BasicConfig(object):
         else:
             raise RuntimeError("Invalid parameter value of visual_engine :", self.visual_engine)
 
+    def save_cfg(self,path):
+        pass
+    
+    def load_cfg(self,path):
+        pass
+    
+    def __dict__(self):
+        ret = {}
+        for a in dir(self):
+            if not a.startswith("__") and not callable(getattr(self, a)):
+                ret[a]=getattr(self, a)
+        return ret
+    
     def __str__(self):
         """:return Configuration details."""
         str = "Configurations for %s:\n" % self.mode

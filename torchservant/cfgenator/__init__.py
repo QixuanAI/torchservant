@@ -5,16 +5,4 @@
 # @File    : __init__.py.py
 # @Software: PyCharm
 
-import os
-
-
-def main(args):
-    pass
-
-
-if __name__ == "__main__":
-    import argparse
-
-    parse = argparse.ArgumentParser()
-    args = parse.parse_args()
-    main(args)
+from torchservant.cfgenator.config import BasicConfig
