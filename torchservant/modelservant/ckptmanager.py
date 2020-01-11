@@ -133,15 +133,26 @@ def resume_checkpoint(config: BasicConfig, model: Module, optimizer: Optimizer =
     return last_epoch
 
 
-def save_model_to(path, model):
+def load_model_from(path, model, errlevel=1):
+    try:
+        while isinstance(model, t.nn.DataParallel):
+            model = list(model.children())[0]
+        model.load_state_dict(load(path))
+        return True
+    except Exception as e:
+        handle_err("Failed to load weight because {}".format(e), errlevel)
+        return False
+    
+
+def save_model_to(path, model, errlevel=1):
     try:
         # remove the nn.DataParallel layer(s) in case of complex situation when loading to CPU.
         while isinstance(model, t.nn.DataParallel):
             model = list(model.children())[0]
-        t.save(model.state_dict(), path)
+        save(model.state_dict(), path)
         return True
     except Exception as e:
-        handle_err("Failed to save model because {}".format(e))
+        handle_err("Failed to save model because {}".format(e), errlevel)
         return False
 
 

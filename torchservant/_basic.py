@@ -19,4 +19,3 @@ def handle_err(msg, errlevel=1):
 
 
 # del modules not for external reference
-del warn
