@@ -24,14 +24,13 @@ def initialize_weights(model:Module,weight_initzer=None):
     if weight_initzer is None:
         weight_initzer = ZeroWeiInitzer()
     assert weight_initzer is _BaseWeiInitzer or  callable(weight_initzer)
-    if weight_initzer is AutoWeiInitzer:
+    if isinstance(weight_initzer, AutoWeiInitzer):
         for m in model.modules():
             if isinstance(m, nn.Conv2d):
-                # weight_initzer(m.weight.data)
                 n = m.kernel_size[0] * m.kernel_size[1] * m.out_channels
                 m.weight.data.normal_(0, math.sqrt(2. / n))
                 if m.bias is not None:
-                    weight_initzer(m.bias.data)
+                    m.bias.data.zero_()
             elif isinstance(m, nn.BatchNorm2d):
                 m.weight.data.fill_(1)
                 m.bias.data.zero_()
