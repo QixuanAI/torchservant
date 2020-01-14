@@ -5,16 +5,12 @@
 # @File    : tensorboardx_api.py
 # @Software: PyCharm
 
-import os
-import tensorboard
+import tensorboardX as tb
+from torchservant.cfgenator.config import BasicConfig
 
-def main(args):
-    pass
+class TensorBoardX():
+    def __init__(self,config:BasicConfig):
+        self.writer = tb.SummaryWriter(logdir=config.log_root+"_tbx",comment=config.log_file)
 
-
-if __name__ == "__main__":
-    import argparse
-
-    parse = argparse.ArgumentParser()
-    args = parse.parse_args()
-    main(args)
+    def plot(self, y, x, line_name, win, legend=None):
+        self.writer.add_scalar(win,y,x)

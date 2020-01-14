@@ -18,7 +18,7 @@ long_description = "TorchServant is an assembly helping quickly development for 
 
 setup(
     name="torchservant",
-    version="0.2.1",
+    version="0.2.2",
     keywords={"pytorch", "tool", "deeplearning", "util", "servant", "visualize"},
     description="Many useful tools for PyTorch.",
     long_description=long_description,
